@@ -1,0 +1,116 @@
+/**
+ * CSS Flexbox Grid
+ *
+ * @author miWebb <info@miwebb.com>
+ * @version 1.0.0
+ */
+$breakpoints: (
+	('desktop', '1440px'),
+	('tablet', '1024px'),
+	('mobile', '640px'),
+);
+$numberOfRows: 12;
+
+[class^='row'], [class^='col']{
+  box-sizing: border-box;
+}
+
+.row{
+	// divine row
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	flex: 0 1 auto;
+	-webkit-flex-direction: row;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: flex-start;
+
+	// divine row types
+	&.row--same-size{
+		align-items: normal;
+	}
+	&.row--reverse{
+		-webkit-flex-direction: row-reverse;
+		flex-direction: row-reverse;
+	}
+
+	// divine row alignments
+	&.row--top{
+		align-items: flex-start;
+	}
+	&.row--middle{
+		align-items: center;
+	}
+	&.row--bottom{
+		align-items: flex-end;
+	}
+	&.row--left{
+		justify-content: flex-start;
+	}
+	&.row--center{
+		justify-content: center;
+	}
+	&.row--right{
+		justify-content: flex-end;
+	}
+	&.row--around{
+		justify-content: space-around;
+	}
+	&.row--between{
+		justify-content: space-between;
+	}
+	&.row--evenly{
+		justify-content: space-evenly;
+	}
+
+	// set the column padding 
+	&:not(.row--no-gutter) [class^='col']{
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+
+	// set auto size column
+	.col{
+		flex: 1 0 0;
+	}
+	// set column offset
+	.col-offset-0{
+  		margin-left: 0;
+	}
+	@for $i from 1 through $numberOfRows{
+		// set specific size column
+		.col-#{$i}{
+	  		flex: 0 0 #{$i*100%/$numberOfRows};
+	  		max-width: #{$i*100%/$numberOfRows};
+		}
+
+		// set column offset
+		.col-offset-#{$i}{
+	  		margin-left: #{$i*100%/$numberOfRows};
+		}
+	}
+
+	// special screen size columns
+	@each $breakpoints-attribute-name, $breakpoints-attribute in $breakpoints {
+		@media screen and (max-width: $breakpoints-attribute){
+			.col-#{$breakpoints-attribute-name}{
+				flex: 1 0 0;
+			}
+			.col-#{$breakpoints-attribute-name}-offset-0{
+		  		margin-left: 0;
+			}
+			@for $i from 1 through $numberOfRows{
+				.col-#{$breakpoints-attribute-name}-#{$i}{
+	  				flex: 0 0 #{$i*100%/$numberOfRows};
+	  				max-width: #{$i*100%/$numberOfRows};
+				}
+
+				.col-#{$breakpoints-attribute-name}-offset-#{$i}{
+			  		margin-left: #{$i*100%/$numberOfRows};
+				}
+			}
+		}
+	}
+}
